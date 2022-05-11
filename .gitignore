@@ -1,1 +1,3 @@
 node_modules
+
+    # "install": "npm run install-server && npm run install client",
