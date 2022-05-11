@@ -1,8 +1,7 @@
 const http = require('http');
-// const mongoose = require('mongoose');
 require('dotenv').config();
 const app = require('./app');
-const database = require('./db');
+const { mongoConnect } = require('./db');
 
 const { loadPlanetsData } = require('../models/planetsModel');
 const { spaceXData } = require('../models/launchesModel');
@@ -11,7 +10,7 @@ const PORT = process.env.PORT || 8000;
 const server = http.createServer(app);
 
 (async function () {
-  await database();
+  await mongoConnect();
   await loadPlanetsData();
   await spaceXData();
 

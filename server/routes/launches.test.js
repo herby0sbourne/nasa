@@ -1,17 +1,17 @@
 require('dotenv').config();
 const request = require('supertest');
-const mongoose = require('mongoose');
 const app = require('../src/app');
-const database = require('../src/db');
+const { mongoConnect, mongoDisconnect } = require('../src/db');
 
 describe('Launches API', () => {
   beforeAll(async () => {
-    await database();
+    await mongoConnect();
   });
 
   afterAll(async () => {
-    await mongoose.disconnect();
+    await mongoDisconnect();
   });
+
   describe('Test GET /launches', () => {
     test('it should respond with 200 code success', async () => {
       const res = await request(app)
