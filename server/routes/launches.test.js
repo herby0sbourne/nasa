@@ -1,4 +1,6 @@
+require('dotenv').config();
 const request = require('supertest');
+const mongoose = require('mongoose');
 const app = require('../src/app');
 const database = require('../src/db');
 
@@ -7,11 +9,14 @@ describe('Launches API', () => {
     await database();
   });
 
+  afterAll(async () => {
+    await mongoose.disconnect();
+  });
   describe('Test GET /launches', () => {
     test('it should respond with 200 code success', async () => {
       const res = await request(app)
         .get('/v1/launches')
-        .expect('content-Type', /json/)
+        .expect('Content-Type', /json/)
         .expect(200);
       // expect(res.statusCode).toBe(200);
     });
@@ -42,7 +47,7 @@ describe('Launches API', () => {
       const res = await request(app)
         .post('/v1/launches')
         .send(launchData)
-        .expect('content-Type', /json/)
+        .expect('Content-Type', /json/)
         .expect(201);
 
       const requestData = new Date(launchData.launchDate).valueOf();
@@ -57,7 +62,7 @@ describe('Launches API', () => {
       const res = await request(app)
         .post('/v1/launches')
         .send(launchDataWithoutDate)
-        .expect('content-Type', /json/)
+        .expect('Content-Type', /json/)
         .expect(400);
 
       expect(res.body).toStrictEqual({
@@ -69,7 +74,7 @@ describe('Launches API', () => {
       const res = await request(app)
         .post('/v1/launches')
         .send(launchDataWithInvalidDate)
-        .expect('content-Type', /json/)
+        .expect('Content-Type', /json/)
         .expect(400);
 
       expect(res.body).toStrictEqual({
