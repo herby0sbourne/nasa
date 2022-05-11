@@ -26,11 +26,13 @@ on:
 
 jobs:
   build:
+    env:
+      CI: true
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [14.x, 16.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -41,3 +43,4 @@ jobs:
       - run: npm install --prefix server
       - run: npm install --prefix client
       - run: npm run build --prefix client
+      - run: npm test
